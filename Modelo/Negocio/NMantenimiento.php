@@ -1,6 +1,5 @@
 <?php
-include_once '../Datos/DMantenimiento.php';
-
+require_once(__DIR__ . '/../Datos/DMantenimiento.php');
 class NMantenimiento
 {
 

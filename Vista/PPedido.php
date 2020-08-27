@@ -1,105 +1,10 @@
 <?php
 
 session_start();
-include_once "../negocio/NPedido.php";
-include_once "../Negocio/NServicio.php";
-$nPedido = new NPedido();
-$nServicio = new NServicio();
-
-$id = isset($_POST["id"]) ? $_POST["id"] : "";
-$descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
-$total = isset($_POST["total"]) ? $_POST["total"] : "";
-$cantidad = isset($_POST["cantidad"]) ? $_POST["cantidad"] : "";
-$fechafin = isset($_POST["fechafin"]) ? $_POST["fechafin"] : "";
-$idservicio = isset($_POST["idservicio"]) ? $_POST["idservicio"] : "";
+$_SESSION["id_usuario"] = 1;
+$_SESSION["rol_usuario"] = 2;
 $idusuario = $_SESSION["id_usuario"];
 $idrol = $_SESSION["rol_usuario"];
-if (!empty($_POST)) {
-    $fecha = date("Y") . '-' . date("m") . '-' . date("d");
-
-
-    if (isset($_POST["agregar"])) {
-        agregar();
-    }
-    if (isset($_POST["modificar"])) {
-        modificar();
-    }
-    if (isset($_POST["habilitar"])) {
-        habilitar();
-    }
-
-    if (isset($_POST["deshabilitar"])) {
-        deshabilitar();
-    }
-
-    if (isset($_POST["terminar"])) {
-        terminar();
-    }
-}
-
-
-function agregar()
-{
-    global $nPedido, $fecha, $descripcion, $total, $cantidad, $idusuario, $idservicio, $fechafin;
-    // sacamos la extension del archivo
-    $ext = explode(".", $_FILES["muestra"]["name"]);
-    if ($_FILES['muestra']['type'] == "image/jpg" || $_FILES['muestra']['type'] == "image/jpeg" || $_FILES['muestra']['type'] == "image/png") {
-        // vamos a renombrar la imagen para evitar que se repitan
-        $muestra = round(microtime(true)) . '.' . end($ext);
-        // ahora cargar el archivo en el proyecto
-        move_uploaded_file($_FILES["muestra"]["tmp_name"], "./assets/img/" . $muestra);
-        $nPedido->agregar($fecha, $descripcion, $muestra, $total, $cantidad, $idusuario, $idservicio, $fechafin);
-    }
-}
-function modificar()
-{
-    global $nPedido, $fecha, $descripcion, $total, $cantidad, $idusuario, $idservicio, $fechafin, $id;
-    //    corregir este if
-    if ($_POST["muestraactual"] != "") {
-        $muestra = $_POST["muestraactual"];
-    } else {
-        // sacamos la extension del archivo
-        $ext = explode(".", $_FILES["muestra"]["name"]);
-        if ($_FILES['muestra']['type'] == "image/jpg" || $_FILES['muestra']['type'] == "image/jpeg" || $_FILES['muestra']['type'] == "image/png") {
-            // vamos a renombrar la imagen para evitar que se repitan
-            $muestra = round(microtime(true)) . '.' . end($ext);
-            // ahora cargar el archivo en el proyecto
-            move_uploaded_file($_FILES["muestra"]["tmp_name"], "./assets/img/" . $muestra);
-        }
-    }
-    $nPedido->modificar($id, $descripcion, $muestra, $total, $cantidad, $idservicio, $fechafin);
-}
-
-function habilitar()
-{
-    global $nPedido, $id;
-    $nPedido->habilitar($id);
-}
-
-function deshabilitar()
-{
-    global $nPedido, $id;
-    $nPedido->deshabilitar($id);
-}
-
-function terminar()
-{
-    global $nPedido, $id;
-    $nPedido->terminar($id);
-}
-
-function listar(){
-    global $nPedido;
-    return $nPedido->listar();
-}
-
-function listarServicios()
-{
-    global $nServicio;
-    return $nServicio->listar();
-}
-
-
 ?>
 
 
@@ -116,7 +21,7 @@ function listarServicios()
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="vista/assets/css/styles.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
@@ -157,7 +62,9 @@ function listarServicios()
                                     ?> Pedido</h3>
                                 <br>
                                 <!-- Formulario -->
-                                <form method="POST" enctype="multipart/form-data">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" value="CPedido" name="controlador">
+                                    <input type="hidden" name="idusuario" value="<?php echo $idusuario ?>">
                                     <input type="hidden" name="id" value="<?php if (isset($_POST["cargar"])) echo $_POST["id"]; ?>">
                                     <div class="form-group row">
                                         <label for="fecha" class="col-sm-2 col-form-label">Fecha Entrega</label>
@@ -179,7 +86,7 @@ function listarServicios()
                                             <input type="hidden" name="muestraactual" value="<?php if (isset($_POST["cargar"])) echo $_POST["muestra"]; ?>">
                                             <?php
                                             if (isset($_POST["cargar"])) {
-                                                echo ' <img src="./assets/img/' . $_POST["muestra"] . '" width="150px" height="120px" >';
+                                                echo ' <img src="Vista/assets/img/' . $_POST["muestra"] . '" width="150px" height="120px" >';
                                             }
                                             ?>
 
@@ -208,13 +115,13 @@ function listarServicios()
                                         <div class="col-sm-10">
                                             <select name="idservicio" class="form-control" id="idservicio">
                                                 <?php
-                                                $res = listarServicios();
+                                                $res = $this->servicio->listar();
                                                 $html = '';
                                                 while ($reg = $res->fetch_object()) {
                                                     $html = $html . ' <option value="' . $reg->id . '"';
 
                                                     if (isset($_POST["cargar"])) {
-                                                        if ($idservicio == $reg->id) {
+                                                        if ($_POST["idservicio"] == $reg->id) {
                                                             $html = $html . 'selected';
                                                         }
                                                     }
@@ -235,24 +142,24 @@ function listarServicios()
 
                                     <div class=" form-group row ">
 
-                                 
+
                                         <?php
-                                        if($idrol==2){
-                                        if (isset($_POST['cargar'])) {
-                                            echo '
+                                        if ($idrol == 2) {
+                                            if (isset($_POST['cargar'])) {
+                                                echo '
                                             <div class=" col-sm-6">
-                                            <button type="submit" name="modificar" id="modificar" class="btn btn-primary">Modificar</button>
+                                            <button type="submit" name="accion" value="modificar" id="modificar" class="btn btn-primary">Modificar</button>
                                            </div> 
                                                <div class="col-sm-6">
-                                                <a type="button" class="btn btn-info" href="PPedido.php">Cancelar</a>
+                                                <a type="button" class="btn btn-info" href="?controlador=CPedido">Cancelar</a>
                                                 </div>';
-                                        } else {
-                                            echo '
+                                            } else {
+                                                echo '
                                             <div class=" col-sm-6">
-                                            <button type="submit" name="agregar" id="agregar" class="btn btn-primary">Agregar</button>
+                                            <button type="submit" name="accion" value="agregar" id="agregar" class="btn btn-primary">Agregar</button>
                                            </div> ';
+                                            }
                                         }
-                                    }
 
                                         ?>
                                     </div>
@@ -302,7 +209,7 @@ function listarServicios()
                                 <?php
 
 
-                                $res = listar();
+                                $res = $this->pedido->listar();
                                 $html = '';
 
                                 while ($reg = $res->fetch_object()) {
@@ -313,7 +220,7 @@ function listarServicios()
                                                <td>' . $reg->cantidad . '</td>
                                                  <td>' . $reg->fechafin . '</td>
                                               <td>' . $reg->total . '</td>
-                                                <td>  <img src="./assets/img/' . $reg->muestra . '" width="150px" height="120px" > </td>
+                                                <td>  <img src="Vista/assets/img/' . $reg->muestra . '" width="150px" height="120px" > </td>
                                                   <td>' . $reg->idservicio . '</td>
                                                    <td>' . $reg->idusuario . '</td>
                                               <td>';
@@ -338,19 +245,24 @@ function listarServicios()
                                                      <input type="hidden" name="cantidad" value="' . $reg->cantidad . '">
                                                        <input type="hidden" name="idservicio" value="' . $reg->idservicio . '">
                                                           <input type="hidden" name="fechafin" value="' . $reg->fechafin . '">';
-                                    if ($reg->terminado == 0 && $idrol==2) {
+                                    if ($reg->terminado == 0 && $idrol == 2) {
                                         $html = $html . '
                                                     <button type="submit" value="cargar" name="cargar"  class="btn btn-info" role="button"><i class="fa fa-edit" aria-hidden="true"></i></button>
                                                  ';
                                     }
-                                    if ($reg->estado == 1 && $idrol==2) {
-                                        $html = $html . '  <button type="submit" value="deshabilitar" name="deshabilitar"  class="btn btn-danger" role="button"><i class="fa fa-minus" aria-hidden="true"></i></button>';
-                                    } elseif($reg->estado == 0 && $idrol==2) {
+                                    $html = $html . '</form>
+                                     <form method= "POST" action="">
+                                                <input type="hidden" value="CPedido" name="controlador">
+                                                <input type="hidden" name="id" value="' . $reg->id . '">
+                                    ';
+                                    if ($reg->estado == 1 && $idrol == 2) {
+                                        $html = $html . '  <button type="submit" value="deshabilitar" name="accion"  class="btn btn-danger" role="button"><i class="fa fa-minus" aria-hidden="true"></i></button>';
+                                    } elseif ($reg->estado == 0 && $idrol == 2) {
 
-                                        $html = $html . '  <button type="submit" value="habilitar" name="habilitar"  class="btn btn-success" role="button"><i class="fa fa-check" aria-hidden="true"></i></button>';
+                                        $html = $html . '  <button type="submit" value="habilitar" name="accion"  class="btn btn-success" role="button"><i class="fa fa-check" aria-hidden="true"></i></button>';
                                     }
                                     if ($reg->terminado == 0 && $idrol == 1) {
-                                        $html = $html . '  <button type="submit" value="terminar" name="terminar"  class="btn btn-warning" role="button"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></button>';
+                                        $html = $html . '  <button type="submit" value="terminar" name="accion"  class="btn btn-warning" role="button"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></button>';
                                     }
 
                                     $html = $html . '
@@ -359,7 +271,7 @@ function listarServicios()
                                                      </td>
 d
                                                      <td>
-                                                     <form method="POST" action="PDisenio.php">
+                                                     <form method="POST" action="?controlador=CDisenio">
                                                         <input type="hidden" name="idpedido" value="' . $reg->id . '">
                                                          <button type="submit" class="btn btn-success" role="button"><i class="fa fa-image" aria-hidden="true"></i></button>
                                                      <form>
@@ -391,7 +303,7 @@ d
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="assets/js/scripts.js"></script>
+    <script src="Vista/assets/js/scripts.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>

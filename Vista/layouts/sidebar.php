@@ -15,8 +15,8 @@
                 </a>
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="PUsuario.php">Usuario</a>
-                        <a class="nav-link" href="PRol.php">Rol</a>
+                        <a class="nav-link" href="?controlador=CUsuario">Usuario</a>
+                        <a class="nav-link" href="?controlador=CRol">Rol</a>
                     </nav>
                 </div>
 
@@ -48,9 +48,9 @@
                 <div class="collapse" id="landa" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
 
-                        <a class="nav-link" href="?controlador=CTecnico">Tecnico</a>
-                        <a class="nav-link" href="PMantenimiento.php">Mantenimiento</a>
 
+                        <a class="nav-link" href="?controlador=CTecnico">Tecnico</a>
+                        <a class="nav-link" href="?controlador=CMantenimiento">Mantenimiento</a>
 
 
                     </nav>
@@ -66,7 +66,7 @@
                 <div class="collapse" id="ylanda" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
 
-                        <a class="nav-link" href="PPedido.php">Pedido</a>
+                        <a class="nav-link" href="?controlador=CPedido">Pedido</a>
 
                         <a class="nav-link" href="?controlador=CServicio">Servicio</a>
                     </nav>

@@ -1,5 +1,5 @@
 <?php
-include_once "../datos/DPedido.php";
+require_once(__DIR__ . '/../Datos/DPedido.php');
 class NPedido
 {
     public $pedido;

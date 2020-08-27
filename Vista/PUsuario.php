@@ -2,75 +2,10 @@
 
 session_start();
 
-if($_SESSION["rol_usuario"]!=1){
-  header("Location: PLogin.php");
-}
-
-include_once "../negocio/NUsuario.php";
-include_once "../negocio/NRol.php";
-
-$nUsuario = new NUsuario();
-$nRol = new NRol();
-$id = isset($_POST["id"]) ? $_POST["id"] : "";
-$nombre = isset($_POST["nombre"]) ? $_POST["nombre"] : "";
-$apellido = isset($_POST["apellido"]) ? $_POST["apellido"] : "";
+// if ($_SESSION["rol_usuario"] != 1) {
+//     header("Location: PLogin.php");
+// }
 $genero = isset($_POST["genero"]) ? $_POST["genero"] : "Masculino";
-$telefono = isset($_POST["telefono"]) ? $_POST["telefono"] : "";
-$direccion = isset($_POST["direccion"]) ? $_POST["direccion"] : "";
-$email = isset($_POST["email"]) ? $_POST["email"] : "";
-$usuario = isset($_POST["usuario"]) ? $_POST["usuario"] : "";
-$password = isset($_POST["password"]) ? $_POST["password"] : "";
-$idrol = isset($_POST["idrol"]) ? $_POST["idrol"] : "";
-if (!empty($_POST)) {
-    if (isset($_POST["agregar"])) {
-        agregar();
-    }
-    if (isset($_POST["modificar"])) {
-        modificar();
-    }
-    if (isset($_POST["habilitar"])) {
-        habilitar();
-    }
-
-    if (isset($_POST["deshabilitar"])) {
-        deshabilitar();
-    }
-}
-
-
-
-function listarRoles()
-{
-    global $nRol;
-    return $nRol->listar();
-}
-
-function listar()
-{
-    global $nUsuario;
-    return $nUsuario->listar();
-}
-function agregar()
-{
-    global $nombre, $apellido, $genero, $telefono, $direccion, $email, $usuario, $password, $idrol, $nUsuario;
-    $nUsuario->agregar($nombre, $apellido, $genero, $telefono, $direccion, $email, $usuario, $password, $idrol);
-}
-function modificar()
-{
-    global $nombre, $apellido, $genero, $telefono, $direccion, $email, $usuario, $password, $idrol, $nUsuario, $id;
-    $nUsuario->modificar($id, $nombre, $apellido, $genero, $telefono, $direccion, $email, $usuario, $password, $idrol);
-}
-function habilitar()
-{
-    global $nUsuario, $id;
-    $nUsuario->habilitar($id);
-}
-function deshabilitar()
-{
-    global $nUsuario, $id;
-    $nUsuario->deshabilitar($id);
-}
-
 
 ?>
 
@@ -88,7 +23,7 @@ function deshabilitar()
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="vista/assets/css/styles.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
@@ -129,7 +64,8 @@ function deshabilitar()
                                     ?> Usuario</h3>
                                 <br>
                                 <!-- Formulario -->
-                                <form method="POST" enctype="multipart/form-data">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" value="CUsuario" name="controlador">
                                     <input type="hidden" name="id" value="<?php if (isset($_POST["cargar"])) echo $_POST["id"]; ?>">
                                     <div class="form-group row">
                                         <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
@@ -208,13 +144,13 @@ function deshabilitar()
                                                             <div class="col-sm-10">
                                                                 <select name="idrol" class="form-control" id="idrol">
                                                                     <?php
-                                                                    $res = listarRoles();
+                                                                    $res = $this->rol->listar();
                                                                     $html = '';
                                                                     while ($reg = $res->fetch_object()) {
                                                                         $html = $html . ' <option value="' . $reg->id . '"';
 
                                                                         if (isset($_POST["cargar"])) {
-                                                                            if ($idrol == $reg->id) {
+                                                                            if ($_POST["idrol"] == $reg->id) {
                                                                                 $html = $html . 'selected';
                                                                             }
                                                                         }
@@ -241,15 +177,15 @@ function deshabilitar()
                                                             if (isset($_POST['cargar'])) {
                                                                 echo '
                                             <div class=" col-sm-6">
-                                            <button type="submit" name="modificar" id="modificar" class="btn btn-primary">Modificar</button>
+                                            <button type="submit" name="accion" value="modificar" id="modificar" class="btn btn-primary">Modificar</button>
                                            </div> 
                                                <div class="col-sm-6">
-                                                <a type="button" class="btn btn-info" href="PUsuario.php">Cancelar</a>
+                                                <a type="button" class="btn btn-info" href="?controlador=CUsuario">Cancelar</a>
                                                 </div>';
                                                             } else {
                                                                 echo '
                                             <div class=" col-sm-6">
-                                            <button type="submit" name="agregar" id="agregar" class="btn btn-primary">Agregar</button>
+                                            <button type="submit" name="accion" value="agregar" id="agregar" class="btn btn-primary">Agregar</button>
                                            </div> ';
                                                             }
 
@@ -297,7 +233,7 @@ function deshabilitar()
                                         <?php
 
 
-                                        $res = listar();
+                                        $res = $this->usuario->listar();
                                         $html = '';
 
                                         while ($reg = $res->fetch_object()) {
@@ -330,16 +266,20 @@ function deshabilitar()
                                                     <input type="hidden" name="email" value="' . $reg->email . '">
                                                     <input type="hidden" name="usuario" value="' . $reg->usuario . '">
                                                     <input type="hidden" name="password" value="' . $reg->password . '">
-                                                    <button type="submit" value="cargar" name="cargar"  class="btn btn-info" role="button"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                                                    <button type="submit" value="cargar" name="cargar"  class="btn btn-info" role="button"><i class="fa fa-edit" aria-hidden="true"></i></button> </form>
+                                                    <form method= "POST" action="">
+                                                <input type="hidden" value="CUsuario" name="controlador">
+                                                <input type="hidden" name="id" value="' . $reg->id . '">
                                                  ';
                                             if ($reg->estado == 1) {
-                                                $html = $html . '  <button type="submit" value="deshabilitar" name="deshabilitar"  class="btn btn-danger" role="button"><i class="fa fa-minus" aria-hidden="true"></i></button>';
+                                                $html = $html . '  <button type="submit" value="deshabilitar" name="accion"  class="btn btn-danger" role="button"><i class="fa fa-minus" aria-hidden="true"></i></button>';
                                             } else {
-                                                $html = $html . '  <button type="submit" value="habilitar" name="habilitar"  class="btn btn-success" role="button"><i class="fa fa-check" aria-hidden="true"></i></button>';
+                                                $html = $html . '  <button type="submit" value="habilitar" name="accion"  class="btn btn-success" role="button"><i class="fa fa-check" aria-hidden="true"></i></button>';
                                             }
 
                                             $html = $html . '
                                                      </form>
+                                                     </td>
                                                   </tr>';
                                         }
                                         echo $html;
@@ -370,7 +310,7 @@ function deshabilitar()
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="assets/js/scripts.js"></script>
+    <script src="Vista/assets/js/scripts.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>

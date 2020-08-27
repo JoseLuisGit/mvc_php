@@ -1,6 +1,7 @@
 <?php
-include_once "../datos/DUsuario.php";
-include_once "../datos/DPersona.php";
+
+require_once(__DIR__ . '/../Datos/DPersona.php');
+require_once(__DIR__ . '/../Datos/DUsuario.php');
 class NUsuario
 {
     public $usuario;
@@ -81,9 +82,10 @@ class NUsuario
         $this->usuario->habilitar();
     }
 
-    public function login ($usuario, $password){
-      $this->usuario->setUsuario($usuario);
-      $this->usuario->setPassword($password);
-     return $this->usuario->login();
+    public function login($usuario, $password)
+    {
+        $this->usuario->setUsuario($usuario);
+        $this->usuario->setPassword($password);
+        return $this->usuario->login();
     }
 }
