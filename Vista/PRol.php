@@ -49,6 +49,7 @@
                                 <br>
                                 <!-- Formulario -->
                                 <form action="" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" value="CRol" name="controlador">
                                     <input type="hidden" name="id" value="<?php if (isset($_POST["cargar"])) echo $_POST["i"]; ?>">
                                     <div class="form-group row">
                                         <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
@@ -63,31 +64,32 @@
                                             </div>
                                         </div>
 
+                                        
 
 
 
 
-                                        <div class=" form-group row ">
-                                            
-                                        <?php
-                                        if (isset($_POST['cargar'])) {
-                                            echo '
+
+                                            <div class=" form-group row ">
+
+                                                <?php
+                                                if (isset($_POST['cargar'])) {
+                                                    echo '
                                             <div class=" col-sm-6">
-                                            <button type="submit" name="modificar" id="modificar" class="btn btn-primary">Modificar</button>
+                                            <button type="submit" name="accion" value="modificar" class="btn btn-primary">Modificar</button>
                                            </div> 
                                                <div class="col-sm-6">
-                                                <a type="button" class="btn btn-info" href="PRol.php">Cancelar</a>
+                                                <a type="button" class="btn btn-info" href="?controlador=CRol">Cancelar</a>
                                                 </div>';
-                                        } else {
-                                            echo '
-                                            <div class=" col-sm-6">
-                                            <input type="hidden" value="CRol" name="controlador">
+                                                } else {
+                                                    echo '
+                                            <div class=" col-sm-6">          
                                             <button type="submit" name="accion" value="agregar" class="btn btn-primary">Agregar</button>
                                            </div> ';
-                                        }
+                                                }
 
-                                        ?>
-                                    </div>
+                                                ?>
+                                            </div>
 
                                 </form>
                             </div>

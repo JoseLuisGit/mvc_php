@@ -30,10 +30,10 @@
 
                 <div class="collapse" id="collapseI" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="PRecurso.php">Recurso</a>
-                        <a class="nav-link" href="PMaquina.php">Maquina</a>
+                        <a class="nav-link" href="?controlador=CRecurso">Recurso</a>
+                        <a class="nav-link" href="?controlador=CMaquina">Maquina</a>
                         <a class="nav-link" href="PIngreso.php">Ingreso</a>
-                        <a class="nav-link" href="PProveedor.php">Proveedor</a>
+                        <a class="nav-link" href="?controlador=CProveedor">Proveedor</a>
 
 
                     </nav>
@@ -48,7 +48,7 @@
                 <div class="collapse" id="landa" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
 
-                        <a class="nav-link" href="PTecnico.php">Tecnico</a>
+                        <a class="nav-link" href="?controlador=CTecnico">Tecnico</a>
                         <a class="nav-link" href="PMantenimiento.php">Mantenimiento</a>
 
 
@@ -68,7 +68,7 @@
 
                         <a class="nav-link" href="PPedido.php">Pedido</a>
 
-                        <a class="nav-link" href="PServicio.php">Servicio</a>
+                        <a class="nav-link" href="?controlador=CServicio">Servicio</a>
                     </nav>
                 </div>
 

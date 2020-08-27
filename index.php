@@ -9,11 +9,11 @@ if (!isset($_REQUEST['controlador'])) {
     include_once "Controlador/$controller.php";
     $controller = ucwords($controller);
     $controller = new $controller;
-    $controller->index();
+    $controller->actualizar();
 } else {
     // Obtenemos el controlador que queremos cargar
     $controller = strtolower($_REQUEST['controlador']);
-    $accion = isset($_REQUEST['accion']) ? $_REQUEST['accion'] : 'index';
+    $accion = isset($_REQUEST['accion']) ? $_REQUEST['accion'] : 'actualizar';
 
     // Instanciamos el controlador
     require_once "Controlador/$controller.php";

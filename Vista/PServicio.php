@@ -1,40 +1,10 @@
 <?php
 session_start();
-if($_SESSION["rol_usuario"]!=1){
-  header("Location: PHome.php");
-}
+// if ($_SESSION["rol_usuario"] != 1) {
+//     header("Location: PHome.php");
+// }
 
-include_once "../negocio/NServicio.php";
-$nServicio = new NServicio();
-$id = isset($_POST["id"]) ? $_POST["id"] : "";
-$nombre = isset($_POST["nombre"]) ? $_POST["nombre"] : "";
-$descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
-if (!empty($_POST)) {
-    if (isset($_POST["agregar"])) {
-        agregar();
-    }
-    if (isset($_POST["modificar"])) {
-        modificar();
-    }
-}
 
-function agregar()
-{
-    global $nServicio, $nombre, $descripcion;
-    $nServicio->agregar($nombre, $descripcion);
-}
-
-function modificar()
-{
-    global $nServicio, $nombre, $descripcion, $id;
-    $nServicio->modificar($id, $nombre, $descripcion);
-}
-
-function listar()
-{
-    global $nServicio;
-    return $nServicio->listar();
-}
 ?>
 
 
@@ -51,7 +21,7 @@ function listar()
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="Vista/assets/css/styles.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
@@ -92,7 +62,8 @@ function listar()
                                     ?> Servicio</h3>
                                 <br>
                                 <!-- Formulario -->
-                                <form method="POST" enctype="multipart/form-data">
+                                <form method="POST" enctype="multipart/form-data" action="">
+                                    <input type="hidden" value="CServicio" name="controlador">
                                     <input type="hidden" name="id" value="<?php if (isset($_POST["cargar"])) echo $_POST["i"]; ?>">
                                     <div class="form-group row">
                                         <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
@@ -117,15 +88,15 @@ function listar()
                                         if (isset($_POST['cargar'])) {
                                             echo '
                                             <div class=" col-sm-6">
-                                            <button type="submit" name="modificar" id="modificar" class="btn btn-primary">Modificar</button>
+                                            <button type="submit" name="accion" value="modificar" id="modificar" class="btn btn-primary">Modificar</button>
                                            </div> 
                                                <div class="col-sm-6">
-                                                <a type="button" class="btn btn-info" href="PServicio.php">Cancelar</a>
+                                               <a type="button" class="btn btn-info" href="?controlador=CServicio">Cancelar</a>
                                                 </div>';
                                         } else {
                                             echo '
                                             <div class=" col-sm-6">
-                                            <button type="submit" name="agregar" id="agregar" class="btn btn-primary">Agregar</button>
+                                            <button type="submit" name="accion" value="agregar" id="agregar" class="btn btn-primary">Agregar</button>
                                            </div> ';
                                         }
 
@@ -159,7 +130,7 @@ function listar()
                                                         <?php
 
 
-                                                        $res = listar();
+                                                        $res = $this->servicio->listar();
                                                         $html = '';
 
                                                         while ($reg = $res->fetch_object()) {
@@ -205,7 +176,7 @@ function listar()
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="assets/js/scripts.js"></script>
+    <script src="Vista/assets/js/scripts.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>

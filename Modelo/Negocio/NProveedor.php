@@ -1,6 +1,6 @@
 <?php
-include_once "../datos/DProveedor.php";
-include_once "../datos/DPersona.php";
+require_once(__DIR__ . '/../Datos/DProveedor.php');
+require_once(__DIR__ . '/../Datos/DPersona.php');
 class NProveedor
 {
     public $proveedor;

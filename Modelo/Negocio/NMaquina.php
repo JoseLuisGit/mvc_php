@@ -1,5 +1,5 @@
 <?php
-include_once "../datos/DMaquina.php";
+require_once(__DIR__ . '/../Datos/DMaquina.php');
 class NMaquina
 {
     public $maquina;

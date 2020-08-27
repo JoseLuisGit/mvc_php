@@ -1,5 +1,5 @@
 <?php
-include_once "../datos/DRecurso.php";
+require_once(__DIR__ . '/../Datos/DRecurso.php');
 class NRecurso
 {
     public $recurso;

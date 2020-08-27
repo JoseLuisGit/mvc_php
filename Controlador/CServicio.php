@@ -1,24 +1,24 @@
 <?php
-require_once(__DIR__ . './../Modelo/Negocio/NRol.php');
-class CRol
+require_once(__DIR__ . './../Modelo/Negocio/NServicio.php');
+class CServicio
 {
-    public $rol;
+    public $servicio;
 
     public function __construct()
     {
-        $this->rol = new NRol();
+        $this->servicio = new NServicio();
     }
 
     public function actualizar()
     {
-        require_once 'Vista/PRol.php';
+        require_once 'Vista/PServicio.php';
     }
 
     public function agregar()
     {
         $nombre = $_REQUEST['nombre'];
         $descripcion = $_REQUEST['descripcion'];
-        $this->rol->agregar($nombre, $descripcion);
+        $this->servicio->agregar($nombre, $descripcion);
         $this->actualizar();
     }
 
@@ -27,7 +27,7 @@ class CRol
         $id = $_REQUEST['id'];
         $nombre = $_REQUEST['nombre'];
         $descripcion = $_REQUEST['descripcion'];
-        $this->rol->modificar($id, $nombre, $descripcion);
+        $this->servicio->modificar($id, $nombre, $descripcion);
         $this->actualizar();
     }
 }

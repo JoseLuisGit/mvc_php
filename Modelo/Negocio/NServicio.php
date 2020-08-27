@@ -1,5 +1,5 @@
 <?php
-include_once "../datos/DServicio.php";
+require_once(__DIR__ . '/../Datos/DServicio.php');
 class NServicio
 {
     public $servicio;
