@@ -9,7 +9,7 @@ class CTecnico
         $this->tecnico = new NTecnico();
     }
 
-    public function actualizar()
+    public function index()
     {
         require_once 'Vista/Ptecnico.php';
     }

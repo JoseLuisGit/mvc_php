@@ -7,7 +7,7 @@ class CHome
     {
     }
 
-    public function actualizar()
+    public function index()
     {
         require_once 'Vista/PHome.php';
     }

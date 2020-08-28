@@ -9,7 +9,7 @@ class CServicio
         $this->servicio = new NServicio();
     }
 
-    public function actualizar()
+    public function index()
     {
         require_once 'Vista/PServicio.php';
     }

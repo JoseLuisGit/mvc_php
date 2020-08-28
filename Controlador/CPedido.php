@@ -12,7 +12,7 @@ class CPedido
         $this->servicio = new NServicio();
     }
 
-    public function actualizar()
+    public function index()
     {
         require_once 'Vista/PPedido.php';
     }

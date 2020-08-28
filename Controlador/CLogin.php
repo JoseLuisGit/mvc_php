@@ -12,7 +12,7 @@ class CLogin
 
         $this->usuario = new NUsuario();
     }
-    public function actualizar()
+    public function index()
     {
 
         require_once 'Vista/PLogin.php';

@@ -9,7 +9,7 @@ class CProveedor
         $this->proveedor = new NProveedor();
     }
 
-    public function actualizar()
+    public function index()
     {
         require_once 'Vista/Pproveedor.php';
     }

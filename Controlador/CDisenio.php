@@ -9,7 +9,7 @@ class CDisenio
         $this->disenio = new NDisenio();
     }
 
-    public function actualizar()
+    public function index()
     {
         require_once 'Vista/PDisenio.php';
     }

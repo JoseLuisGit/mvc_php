@@ -9,7 +9,7 @@ class CMaquina
         $this->maquina = new NMaquina();
     }
 
-    public function actualizar()
+    public function index()
     {
         require_once 'Vista/PMaquina.php';
     }

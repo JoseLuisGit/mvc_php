@@ -14,7 +14,7 @@ class CIngreso
         $this->ingreso = new NIngreso();
     }
 
-    public function actualizar()
+    public function index()
     {
 
         require_once 'Vista/Pingreso.php';

@@ -12,7 +12,7 @@ class CMantenimiento
         $this->mantenimiento = new NMantenimiento();
     }
 
-    public function actualizar()
+    public function index()
     {
         require_once 'Vista/PMantenimiento.php';
     }

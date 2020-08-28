@@ -9,7 +9,7 @@ class CRecurso
         $this->recurso = new NRecurso();
     }
 
-    public function actualizar()
+    public function index()
     {
         require_once 'Vista/Precurso.php';
     }
