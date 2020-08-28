@@ -5,14 +5,11 @@ require_once(__DIR__ . './../Modelo/Negocio/NTecnico.php');
 class CMantenimiento
 {
     public $mantenimiento;
-    public $maquina;
-    public $tecnico;
+
 
     public function __construct()
     {
         $this->mantenimiento = new NMantenimiento();
-        $this->maquina = new NMaquina();
-        $this->tecnico = new NTecnico();
     }
 
     public function actualizar()

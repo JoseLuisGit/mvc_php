@@ -1,7 +1,5 @@
 <?php
 session_start();
-include_once "../Negocio/NDisenio.php";
-
 
 
 $nDisenio = new NDisenio();
@@ -9,50 +7,12 @@ $nDisenio = new NDisenio();
 if (isset($_POST["idpedido"])) {
     $idpedido = $_POST["idpedido"];
 } else {
-    header("Location: PPedido.php");
+    header("Location: ?controlador=CPedido");
 }
 
-$id = isset($_POST["id"]) ? $_POST["id"] : "";
-$imagen = isset($_POST["imagen"]) ? $_POST["imagen"] : "";
 
 
 
-if (!empty($_POST)) {
-    if (isset($_POST["agregar"])) {
-        agregar();
-    }
-
-    if (isset($_POST["eliminar"])) {
-        eliminar();
-    }
-
-    function listar()
-    {
-        global $nDisenio, $idpedido;
-        return $nDisenio->listar($idpedido);
-    }
-    function agregar()
-    {
-        global $nDisenio, $idpedido;
-        $ext = explode(".", $_FILES["imagen"]["name"]);
-        if ($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" || $_FILES['imagen']['type'] == "image/png") {
-            // vamos a renombrar la imagen para evitar que se repitan
-            $imagen = round(microtime(true)) . '.' . end($ext);
-            // ahora cargar el archivo en el proyecto
-            move_uploaded_file($_FILES["imagen"]["tmp_name"], "./assets/img/" . $imagen);
-            $nDisenio->agregar($idpedido, $imagen);
-        }
-    }
-
-    function eliminar()
-    {
-        global $nDisenio, $id, $imagen;
-        if (file_exists('./assets/img/' . $imagen)) {
-            unlink('./assets/img/' . $imagen);
-        }
-        $nDisenio->eliminar($id);
-    }
-}
 
 
 
@@ -76,7 +36,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="Vista/assets/css/styles.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
@@ -115,7 +75,8 @@ if (!empty($_POST)) {
                                 <h3> Diseños</h3>
                                 <br>
                                 <!-- Formulario -->
-                                <form method="POST" enctype="multipart/form-data">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="controlador" value="CDisenio">
                                     <input type="hidden" name="idpedido" value="<?php echo $idpedido; ?>">
                                     <div class=" form-group row">
                                         <label for="muestra" class="col-sm-2 col-form-label">Imagen</label>
@@ -134,14 +95,15 @@ if (!empty($_POST)) {
 
                                     <div class=" form-group row ">
 
-                                      <?php
-                                      if($_SESSION["rol_usuario"]==1){
-                                      echo ' <div class=" col-sm-6">
-                                            <button type="submit" name="agregar" id="agregar" class="btn btn-primary">Agregar</button>
-                                            <a href="PPedido.php" class="btn btn-primary">Atras</a>
-                                        </div>';}
-                                      ?>
-                                       
+                                        <?php
+                                        if ($_SESSION["rol_usuario"] == 1) {
+                                            echo ' <div class=" col-sm-6">
+                                            <button type="submit" name="accion" value="agregar"  id="agregar" class="btn btn-primary">Agregar</button>
+                                            <a href="?controlador=CPedido" class="btn btn-primary">Atras</a>
+                                        </div>';
+                                        }
+                                        ?>
+
                                     </div>
 
                                 </form>
@@ -171,30 +133,31 @@ if (!empty($_POST)) {
                                         <?php
 
 
-                                        $res = listar();
+                                        $res = $this->disenio->listar($idpedido);
                                         $html = '';
 
                                         while ($reg = $res->fetch_object()) {
                                             $html = $html . '
                                             <tr >
                                                <td>' . $reg->id . '</td>
-                                              <td>  <img src="./assets/img/' . $reg->imagen . '" height="400px"> </td>
+                                              <td>  <img src="vista/assets/img/' . $reg->imagen . '" height="400px"> </td>
 
                                                <td class="row"> ';
 
-                                                  if($_SESSION["rol_usuario"]==1){
+                                            if ($_SESSION["rol_usuario"] == 1) {
 
-                                                  $html = $html.'<form  method="POST">
+                                                $html = $html . '<form action"" method="POST">
                                                    <input type="hidden" name="id" id="id" value="' . $reg->id . '">
                                                    <input type="hidden" name="idpedido" id="idpedido" value="' . $reg->idpedido . '">
                                                    <input type="hidden" name="imagen" id="imagen" value="' . $reg->imagen . '">
 
 
-                                                    <button type="submit" value="eliminar" name="eliminar" id="eliminar" class="btn btn-danger" role="button"><i class="fa fa-eraser" aria-hidden="true"></i></button>
-                                                     </form>';
-                                                  }
-                                               
-                                                     $html=$html.'
+                                                    <button type="submit" value="eliminar" name="accion" id="eliminar" class="btn btn-danger" role="button"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+                                                     </form>
+                                                     </td>';
+                                            }
+
+                                            $html = $html . '
                                                   </tr>';
                                         }
                                         echo $html
@@ -225,7 +188,7 @@ if (!empty($_POST)) {
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="assets/js/scripts.js"></script>
+    <script src="Vista/assets/js/scripts.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>

@@ -1,10 +1,21 @@
 <?php
 
 session_start();
-$_SESSION["id_usuario"] = 1;
-$_SESSION["rol_usuario"] = 2;
+
 $idusuario = $_SESSION["id_usuario"];
 $idrol = $_SESSION["rol_usuario"];
+function listar()
+{
+    $nPedido = new NPedido();
+    return $nPedido->listar();
+}
+
+function listarServicios()
+{
+    $nServicio = new NServicio();
+    return $nServicio->listar();
+}
+
 ?>
 
 
@@ -115,7 +126,7 @@ $idrol = $_SESSION["rol_usuario"];
                                         <div class="col-sm-10">
                                             <select name="idservicio" class="form-control" id="idservicio">
                                                 <?php
-                                                $res = $this->servicio->listar();
+                                                $res = listarServicios();
                                                 $html = '';
                                                 while ($reg = $res->fetch_object()) {
                                                     $html = $html . ' <option value="' . $reg->id . '"';
@@ -209,7 +220,7 @@ $idrol = $_SESSION["rol_usuario"];
                                 <?php
 
 
-                                $res = $this->pedido->listar();
+                                $res = listar();
                                 $html = '';
 
                                 while ($reg = $res->fetch_object()) {

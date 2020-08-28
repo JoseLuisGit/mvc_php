@@ -1,5 +1,5 @@
 <?php
-include_once '../Datos/DDisenio.php';
+require_once(__DIR__ . '/../Datos/DDisenio.php');
 
 class NDisenio
 {
@@ -9,7 +9,7 @@ class NDisenio
     public function __construct()
     {
 
-        $this->disenio = new Ddisenio();
+        $this->disenio = new DDisenio();
     }
 
     public function listar(int $idpedido)

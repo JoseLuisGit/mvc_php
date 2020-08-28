@@ -4,16 +4,16 @@ require_once(__DIR__ . './../Modelo/Negocio/NRol.php');
 class CUsuario
 {
     public $usuario;
-    public $rol;
+
 
     public function __construct()
     {
         $this->usuario = new NUsuario();
-        $this->rol = new NRol();
     }
 
     public function actualizar()
     {
+
         require_once 'Vista/PUsuario.php';
     }
 

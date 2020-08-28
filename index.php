@@ -2,7 +2,7 @@
 <?php
 
 
-$controller = 'CRol';
+$controller = 'CLogin';
 
 // Todo esta lógica hara el papel de un FrontController
 if (!isset($_REQUEST['controlador'])) {

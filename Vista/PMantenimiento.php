@@ -2,10 +2,27 @@
 
 session_start();
 
-// if ($_SESSION["rol_usuario"] != 1) {
-//     header("Location: PLogin.php");
-// }
+if ($_SESSION["rol_usuario"] != 1) {
 
+    header("Location: ?controlador=CHome");
+}
+function listar()
+{
+    $mantenimiento = new NMantenimiento();
+    return $mantenimiento->listar();
+}
+
+function listarTecnicos()
+{
+    $nTecnico = new NTecnico();
+    return $nTecnico->listar();
+}
+
+function listarMaquinas()
+{
+    $nMaquina = new NMaquina();
+    return $nMaquina->listar();
+}
 
 ?>
 
@@ -89,7 +106,7 @@ session_start();
                                         <div class="col-sm-10">
                                             <select name="idmaquina" class="form-control" id="idmaquina">
                                                 <?php
-                                                $res = $this->maquina->listar();
+                                                $res = listarMaquinas();
                                                 $html = '';
                                                 while ($reg = $res->fetch_object()) {
                                                     $html = $html . ' <option value="' . $reg->id . '"';
@@ -116,7 +133,7 @@ session_start();
                                         <div class="col-sm-10">
                                             <select name="idtecnico" class="form-control" id="idtecnico">
                                                 <?php
-                                                $res = $this->tecnico->listar();
+                                                $res = listarTecnicos();
                                                 $html = '';
                                                 while ($reg = $res->fetch_object()) {
                                                     $html = $html . ' <option value="' . $reg->id . '"';
@@ -195,7 +212,7 @@ session_start();
                                         <?php
 
 
-                                        $res = $this->mantenimiento->listar();
+                                        $res = listar();
                                         $html = '';
 
                                         while ($reg = $res->fetch_object()) {

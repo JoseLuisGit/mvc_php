@@ -1,3 +1,14 @@
+<?php
+
+session_start();
+if ($_SESSION["rol_usuario"] != 1) {
+    header("Location: ?controlador=CHome");
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 

@@ -2,9 +2,10 @@
 
 session_start();
 
-if($_SESSION["rol_usuario"]!=1){
-  header("Location: PHome.php");
+if ($_SESSION["rol_usuario"] != 1) {
+    header("Location: ?controlador=CHome");
 }
+
 
 include_once "../negocio/NIngreso.php";
 include_once "../Negocio/NProveedor.php";

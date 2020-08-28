@@ -2,11 +2,26 @@
 
 session_start();
 
-// if ($_SESSION["rol_usuario"] != 1) {
-//     header("Location: PLogin.php");
-// }
+if ($_SESSION["rol_usuario"] != 1) {
+    header("Location: ?controlador=CHome");
+}
+
+
+
 $genero = isset($_POST["genero"]) ? $_POST["genero"] : "Masculino";
 
+
+function listarRoles()
+{
+    $rol = new NRol();
+    return $rol->listar();
+}
+
+function listar()
+{
+    $usuario = new NUsuario();
+    return $usuario->listar();
+}
 ?>
 
 
@@ -144,7 +159,7 @@ $genero = isset($_POST["genero"]) ? $_POST["genero"] : "Masculino";
                                                             <div class="col-sm-10">
                                                                 <select name="idrol" class="form-control" id="idrol">
                                                                     <?php
-                                                                    $res = $this->rol->listar();
+                                                                    $res = listarRoles();
                                                                     $html = '';
                                                                     while ($reg = $res->fetch_object()) {
                                                                         $html = $html . ' <option value="' . $reg->id . '"';
@@ -233,7 +248,7 @@ $genero = isset($_POST["genero"]) ? $_POST["genero"] : "Masculino";
                                         <?php
 
 
-                                        $res = $this->usuario->listar();
+                                        $res = listar();
                                         $html = '';
 
                                         while ($reg = $res->fetch_object()) {

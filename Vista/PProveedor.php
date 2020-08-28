@@ -1,9 +1,9 @@
 <?php
 
 session_start();
-// if($_SESSION["rol_usuario"]!=1){
-//   header("Location: PHome.php");
-// }
+if ($_SESSION["rol_usuario"] != 1) {
+    header("Location: ?controlador=CHome");
+}
 $genero = isset($_POST["genero"]) ? $_POST["genero"] : "Masculino";
 
 ?>

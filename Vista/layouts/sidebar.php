@@ -80,7 +80,7 @@
         </div>
         <div class="sb-sidenav-footer">
             <div class="small">Logueado como:</div>
-            <?php echo 'Yolanda'; //$_SESSION["nombre_usuario"]; 
+            <?php echo $_SESSION["nombre_usuario"];
             ?>
         </div>
     </nav>
