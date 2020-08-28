@@ -27,7 +27,7 @@ class CLogin
 
             require_once 'Vista/PHome.php';
         } else {
-            $this->actualizar();
+            require_once 'Vista/PLogin.php';
         }
     }
 }

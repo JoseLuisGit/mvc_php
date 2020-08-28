@@ -32,7 +32,7 @@
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="?controlador=CRecurso">Recurso</a>
                         <a class="nav-link" href="?controlador=CMaquina">Maquina</a>
-                        <a class="nav-link" href="PIngreso.php">Ingreso</a>
+                        <a class="nav-link" href="?controlador=CIngreso">Ingreso</a>
                         <a class="nav-link" href="?controlador=CProveedor">Proveedor</a>
 
 

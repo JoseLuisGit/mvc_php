@@ -19,7 +19,7 @@ class CServicio
         $nombre = $_REQUEST['nombre'];
         $descripcion = $_REQUEST['descripcion'];
         $this->servicio->agregar($nombre, $descripcion);
-        $this->actualizar();
+        require_once 'Vista/PServicio.php';
     }
 
     public function modificar()
@@ -28,6 +28,6 @@ class CServicio
         $nombre = $_REQUEST['nombre'];
         $descripcion = $_REQUEST['descripcion'];
         $this->servicio->modificar($id, $nombre, $descripcion);
-        $this->actualizar();
+        require_once 'Vista/PServicio.php';
     }
 }

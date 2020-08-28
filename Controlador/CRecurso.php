@@ -21,7 +21,7 @@ class CRecurso
         $medida = $_REQUEST['medida'];
         $cantidad = $_REQUEST['cantidad'];
         $this->recurso->agregar($nombre, $descripcion, $medida, $cantidad);
-        $this->actualizar();
+        require_once 'Vista/Precurso.php';
     }
 
     public function modificar()
@@ -32,6 +32,6 @@ class CRecurso
         $medida = $_REQUEST['medida'];
         $cantidad = $_REQUEST['cantidad'];
         $this->recurso->modificar($id, $nombre, $descripcion, $medida, $cantidad);
-        $this->actualizar();
+        require_once 'Vista/Precurso.php';
     }
 }

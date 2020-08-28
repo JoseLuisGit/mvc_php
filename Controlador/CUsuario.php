@@ -29,7 +29,7 @@ class CUsuario
         $password = $_REQUEST["password"];
         $idrol = $_REQUEST["idrol"];
         $this->usuario->agregar($nombre, $apellido, $genero, $telefono, $direccion, $email, $usuario, $password, $idrol);
-        $this->actualizar();
+        require_once 'Vista/PUsuario.php';
     }
 
     public function modificar()
@@ -45,14 +45,14 @@ class CUsuario
         $password = $_REQUEST["password"];
         $idrol = $_REQUEST["idrol"];
         $this->usuario->modificar($id, $nombre, $apellido, $genero, $telefono, $direccion, $email, $usuario, $password, $idrol);
-        $this->actualizar();
+        require_once 'Vista/PUsuario.php';
     }
 
     public function habilitar()
     {
         $id = $_REQUEST['id'];
         $this->usuario->habilitar($id);
-        $this->actualizar();
+        require_once 'Vista/PUsuario.php';
     }
 
 
@@ -60,6 +60,6 @@ class CUsuario
     {
         $id = $_REQUEST['id'];
         $this->usuario->deshabilitar($id);
-        $this->actualizar();
+        require_once 'Vista/PUsuario.php';
     }
 }

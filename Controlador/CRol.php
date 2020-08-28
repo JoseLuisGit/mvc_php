@@ -19,7 +19,7 @@ class CRol
         $nombre = $_REQUEST['nombre'];
         $descripcion = $_REQUEST['descripcion'];
         $this->rol->agregar($nombre, $descripcion);
-        $this->actualizar();
+        require_once 'Vista/PRol.php';
     }
 
     public function modificar()
@@ -28,6 +28,6 @@ class CRol
         $nombre = $_REQUEST['nombre'];
         $descripcion = $_REQUEST['descripcion'];
         $this->rol->modificar($id, $nombre, $descripcion);
-        $this->actualizar();
+        require_once 'Vista/PRol.php';
     }
 }

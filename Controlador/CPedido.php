@@ -36,7 +36,7 @@ class CPedido
             $this->pedido->agregar($fecha, $descripcion, $muestra, $total, $cantidad, $idusuario, $idservicio, $fechafin);
         }
 
-        $this->actualizar();
+        require_once 'Vista/PPedido.php';
     }
 
     public function modificar()
@@ -64,14 +64,14 @@ class CPedido
         }
         if ($muestra != null)
             $this->pedido->modificar($id, $fecha, $descripcion, $muestra, $total, $cantidad, $idusuario, $idservicio, $fechafin);
-        $this->actualizar();
+        require_once 'Vista/PPedido.php';
     }
 
     public function habilitar()
     {
         $id = $_REQUEST['id'];
         $this->pedido->habilitar($id);
-        $this->actualizar();
+        require_once 'Vista/PPedido.php';
     }
 
 
@@ -79,13 +79,13 @@ class CPedido
     {
         $id = $_REQUEST['id'];
         $this->pedido->deshabilitar($id);
-        $this->actualizar();
+        require_once 'Vista/PPedido.php';
     }
 
     public function terminar()
     {
         $id = $_REQUEST['id'];
         $this->pedido->terminar($id);
-        $this->actualizar();
+        require_once 'Vista/PPedido.php';
     }
 }

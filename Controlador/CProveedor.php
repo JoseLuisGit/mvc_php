@@ -25,7 +25,7 @@ class CProveedor
         $empresa = $_REQUEST["empresa"];
         $telefonoempresa = $_REQUEST["telefonoempresa"];
         $this->proveedor->agregar($nombre, $apellido, $genero, $telefono, $direccion, $email, $empresa, $telefonoempresa);
-        $this->actualizar();
+        require_once 'Vista/Pproveedor.php';
     }
 
     public function modificar()
@@ -40,6 +40,6 @@ class CProveedor
         $empresa = $_REQUEST["empresa"];
         $telefonoempresa = $_REQUEST["telefonoempresa"];
         $this->proveedor->modificar($id, $nombre, $apellido, $genero, $telefono, $direccion, $email, $empresa, $telefonoempresa);
-        $this->actualizar();
+        require_once 'Vista/Pproveedor.php';
     }
 }

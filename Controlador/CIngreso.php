@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(__DIR__ . './../Modelo/Negocio/NIngreso.php');
 require_once(__DIR__ . './../Modelo/Negocio/NRecurso.php');
 require_once(__DIR__ . './../Modelo/Negocio/NProveedor.php');
@@ -27,6 +28,20 @@ class CIngreso
         $detalle = $_SESSION["detalle"];
         $this->ingreso->agregar($fecha, $idproveedor, $total, $detalle);
         $_SESSION["detalle"] = [];
-        $this->actualizar();
+        require_once 'Vista/Pingreso.php';
+    }
+
+    public function agregarDetalle()
+    {
+        $idrecurso = $_REQUEST['idrecurso'];
+        $cantidad = $_REQUEST['cantidad'];
+        $costo = $_REQUEST['costo'];
+        require_once 'Vista/Pingreso.php';
+    }
+
+    public function listarDetalle()
+    {
+        $id = $_REQUEST["id"];
+        require_once 'Vista/Pingreso.php';
     }
 }

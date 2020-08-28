@@ -1,6 +1,8 @@
 <?php
-include_once "../datos/DIngreso.php";
-include_once "../datos/DDetalleIngreso.php";
+
+require_once(__DIR__ . '/../Datos/DIngreso.php');
+require_once(__DIR__ . '/../Datos/DDetalleIngreso.php');
+
 class NIngreso
 {
     private $ingreso;

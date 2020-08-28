@@ -1,87 +1,55 @@
 <?php
 
-session_start();
 
 if ($_SESSION["rol_usuario"] != 1) {
     header("Location: ?controlador=CHome");
 }
-
-
-include_once "../negocio/NIngreso.php";
-include_once "../Negocio/NProveedor.php";
-include_once "../Negocio/NRecurso.php";
-
-$nIngreso = new NIngreso();
-$nProveedor = new NProveedor();
-$nRecurso = new NRecurso();
-
+if (isset($_POST["limpiar"])) {
+    $_SESSION["detalle"] = [];
+}
 
 $detalle = array();
 
-$id = isset($_POST["id"]) ? $_POST["id"] : "";
-$fecha = isset($_POST["fecha"]) ? $_POST["fecha"] : "";
-$idproveedor = isset($_POST["idproveedor"]) ? $_POST["idproveedor"] : "";
-$total = isset($_POST["total"]) ? $_POST["total"] : "";
-$idrecurso = isset($_POST["idrecurso"]) ? $_POST["idrecurso"] : "";
+if (!isset($_SESSION["detalle"])) {
+    $_SESSION["detalle"] = [];
+}
+if ($_SESSION["detalle"] != []) {
+    $detalle = $_SESSION["detalle"];
+}
+if (isset($idrecurso)) {
 
-
-
-
-if (!empty($_POST)) {
-    if (isset($_POST["agregar"])) {
-        agregar();
-        $_SESSION["detalle"] = [];
-    }
-
-    if (isset($_POST["listardetalle"])) {
-        $listadodetalle = listarDetalle();
-    }
-    if (isset($_POST["agregardetalle"])) {
-        agregarDetalle();
-    }
-    if (isset($_POST["limpiar"])) {
-        $_SESSION["detalle"] = [];
-    }
-    if (isset($_SESSION["detalle"]))
-        $detalle = $_SESSION["detalle"];
+    agregarDetalle($idrecurso, $cantidad, $costo);
+    $detalle = $_SESSION["detalle"];
 }
 
-function agregar()
+function listarDetalle($id)
 {
-    global $nIngreso, $fecha, $idproveedor, $total;
-    $nIngreso->agregar($fecha, $idproveedor, $total, $_SESSION["detalle"]);
-}
-
-function listarDetalle()
-{
-    global $nIngreso, $id;
+    $nIngreso = new NIngreso();
     return $nIngreso->listardetalle($id);
 }
 
 function listar()
 {
-    global $nIngreso;
+    $nIngreso = new NIngreso();
     return $nIngreso->listar();
 }
 function listarProveedores()
 {
-    global $nProveedor;
+    $nProveedor = new NProveedor();
     return $nProveedor->listar();
 }
 
 
-function agregarDetalle()
+function agregarDetalle($idrecurso, $costo, $cantidad)
 {
-    global $idrecurso, $nRecurso, $detalle;
+    $nRecurso = new NRecurso();
     if ($idrecurso != null) {
         $rec = $nRecurso->obtener($idrecurso);
         if ($rec != null) {
-
-            $rec["cantidad"] = $_POST["cantidad"];
-            $rec["costo"] = $_POST["costo"];
+            $rec["cantidad"] = $cantidad;
+            $rec["costo"] = $costo;
             $_SESSION["detalle"][] = $rec;
         }
-        $detalle = $_SESSION["detalle"];
     }
 }
 
@@ -104,7 +72,7 @@ function agregarDetalle()
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="assets/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="Vista/assets/css/styles.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
@@ -142,8 +110,8 @@ function agregarDetalle()
                                 <h3>Agregar Ingreso</h3>
                                 <br>
                                 <!-- Formulario -->
-                                <form method="POST" enctype="multipart/form-data">
-
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="controlador" value="CIngreso">
                                     <div class="form-group row">
                                         <label for="nombre" class="col-sm-2 col-form-label">Fecha</label>
                                         <div class="col-sm-10">
@@ -156,24 +124,22 @@ function agregarDetalle()
                                             <select name="idproveedor" class="form-control" id="idproveedor">
                                                 <?php
 
-                                                if (isset($_POST["agregar"]) || isset($_POST["listardetalle"]) || isset($_POST["agregardetalle"])) {
-                                                    $html = $_SESSION["proveedores"];
-                                                } else {
-                                                    $res = listarProveedores();
-                                                    $html = '';
-                                                    while ($reg = $res->fetch_object()) {
-                                                        $html = $html . ' <option value="' . $reg->id . '"';
 
-                                                        if (isset($_POST["agregardetalle"])) {
-                                                            if ($idproveedor == $reg->id) {
-                                                                $html = $html . 'selected';
-                                                            }
+                                                $res = listarProveedores();
+                                                $html = '';
+                                                while ($reg = $res->fetch_object()) {
+                                                    $html = $html . ' <option value="' . $reg->id . '"';
+
+                                                    if (isset($idrecurso)) {
+                                                        if ($_POST["idproveedor"] == $reg->id) {
+                                                            $html = $html . 'selected';
                                                         }
-
-                                                        $html = $html . ' >' . $reg->nombre . ' ' . $reg->apellido . '</option>';
                                                     }
-                                                    $_SESSION["proveedores"] = $html;
+
+                                                    $html = $html . ' >' . $reg->nombre . ' ' . $reg->apellido . '</option>';
                                                 }
+
+
                                                 echo $html;
                                                 ?>
 
@@ -201,7 +167,7 @@ function agregarDetalle()
                                             <input type="number" name="costo" class="form-control" id="costo" placeholder="Costo">
                                         </div>
 
-                                        <button type="submit" class="btn btn-primary" name="agregardetalle">Agregar Detalle</button>
+                                        <button type="submit" class="btn btn-primary" name="accion" value="agregarDetalle">Agregar Detalle</button>
                                         <button type="submit" class="btn btn-danger" name="limpiar">Limpiar</button>
 
 
@@ -222,6 +188,7 @@ function agregarDetalle()
                                             </tr>
                                         </thead>
                                         <?php
+
                                         $total = 0;
                                         foreach ($detalle as $det) {
                                             echo '<tr><td>' . $det["id"] . '</td>
@@ -248,7 +215,7 @@ function agregarDetalle()
                                     </div>
 
                                     <div class=" col-sm-6">
-                                        <button type="submit" name="agregar" id="agregar" class="btn btn-primary">Agregar</button>
+                                        <button type="submit" name="accion" value="agregar" id="agregar" class="btn btn-primary">Agregar</button>
                                     </div>
 
 
@@ -286,14 +253,12 @@ function agregarDetalle()
 
                                         <?php
 
-                                        if (isset($_POST["listardetalle"]) || isset($_POST["agregardetalle"])) {
-                                            $html = $_SESSION["ingresos"];
-                                        } else {
-                                            $res = listar();
-                                            $html = '';
 
-                                            while ($reg = $res->fetch_object()) {
-                                                $html = $html . '
+                                        $res = listar();
+                                        $html = '';
+
+                                        while ($reg = $res->fetch_object()) {
+                                            $html = $html . '
                                             <tr >
                                                  <td>' . $reg->id . '</td>
                                                <td>' . $reg->fecha . '</td>
@@ -301,19 +266,18 @@ function agregarDetalle()
                                                <td>' . $reg->idProveedor . '</td>
                                               ';
 
-                                                $html = $html . '</td>
+                                            $html = $html . '</td>
                                                <td class="row"> 
-                                               <form  method="POST">
+                                               <form action="" method="POST">
                                                    <input type="hidden" name="id" value="' . $reg->id . '">
                                                     <input type="hidden" name="fecha" value="' . $reg->fecha . '">
                                                     <input type="hidden" name="total" value="' . $reg->total . '">
                                                       <input type="hidden" name="idproveedor" value="' . $reg->idProveedor . '">
-                                                    <button type="submit" value="listardetalle" name="listardetalle"  class="btn btn-info" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                    <button type="submit" value="listarDetalle" name="accion"  class="btn btn-info" role="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                                      </form>
                                                   </tr>';
-                                            }
-                                            $_SESSION["ingresos"] = $html;
                                         }
+
                                         echo $html;
                                         ?>
 
@@ -326,7 +290,7 @@ function agregarDetalle()
 
                         <?php
 
-                        if (isset($_POST["listardetalle"])) {
+                        if (isset($id)) {
 
 
                             $html = ' <div class=" card-body">
@@ -345,7 +309,8 @@ function agregarDetalle()
                                     </thead>
                                     <tbody>
                                         <tr>';
-                            while ($reg = $listadodetalle->fetch_object()) {
+                            $listardetalle = listarDetalle($id);
+                            while ($reg = $listardetalle->fetch_object()) {
                                 $html = $html . '
                                 <th scope="row">' . $reg->idingreso . '</th>
                                 
@@ -397,7 +362,7 @@ function agregarDetalle()
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="assets/js/scripts.js"></script>
+    <script src="Vista/assets/js/scripts.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>

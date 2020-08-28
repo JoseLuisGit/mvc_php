@@ -21,7 +21,7 @@ class CMaquina
         $modelo = $_REQUEST['modelo'];
         $capacidad = $_REQUEST['capacidad'];
         $this->maquina->agregar($nombre, $descripcion, $modelo, $capacidad);
-        $this->actualizar();
+        require_once 'Vista/PMaquina.php';
     }
 
     public function modificar()
@@ -32,14 +32,14 @@ class CMaquina
         $modelo = $_REQUEST['modelo'];
         $capacidad = $_REQUEST['capacidad'];
         $this->maquina->modificar($id, $nombre, $descripcion, $modelo, $capacidad);
-        $this->actualizar();
+        require_once 'Vista/PMaquina.php';
     }
 
     public function habilitar()
     {
         $id = $_REQUEST['id'];
         $this->maquina->habilitar($id);
-        $this->actualizar();
+        require_once 'Vista/PMaquina.php';
     }
 
 
@@ -47,6 +47,6 @@ class CMaquina
     {
         $id = $_REQUEST['id'];
         $this->maquina->deshabilitar($id);
-        $this->actualizar();
+        require_once 'Vista/PMaquina.php';
     }
 }

@@ -28,7 +28,7 @@ class CDisenio
             $this->disenio->agregar($idpedido, $imagen);
         }
 
-        $this->actualizar();
+        require_once 'Vista/PDisenio.php';
     }
 
     public function eliminar()
@@ -39,6 +39,6 @@ class CDisenio
             unlink('Vista/assets/img/' . $imagen);
         }
         $this->disenio->eliminar($id);
-        $this->actualizar();
+        require_once 'Vista/PDisenio.php';
     }
 }

@@ -24,7 +24,7 @@ class CMantenimiento
         $total = $_REQUEST['total'];
         $fecha = $_REQUEST['fecha'];
         $this->mantenimiento->agregar($idmaquina, $idtecnico, $total, $fecha);
-        $this->actualizar();
+        require_once 'Vista/PMantenimiento.php';
     }
 
     public function modificar()
@@ -35,12 +35,12 @@ class CMantenimiento
         $total = $_REQUEST['total'];
         $fecha = $_REQUEST['fecha'];
         $this->mantenimiento->modificar($id, $idmaquina, $idtecnico, $total, $fecha);
-        $this->actualizar();
+        require_once 'Vista/PMantenimiento.php';
     }
     public function eliminar()
     {
         $id = $_REQUEST['id'];
         $this->mantenimiento->eliminar($id);
-        $this->actualizar();
+        require_once 'Vista/PMantenimiento.php';
     }
 }

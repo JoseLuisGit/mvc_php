@@ -24,7 +24,7 @@ class CTecnico
         $email = $_REQUEST["email"];
         $informacion = $_REQUEST["informacion"];
         $this->tecnico->agregar($nombre, $apellido, $genero, $telefono, $direccion, $email, $informacion);
-        $this->actualizar();
+        require_once 'Vista/Ptecnico.php';
     }
 
     public function modificar()
@@ -38,6 +38,6 @@ class CTecnico
         $email = $_REQUEST["email"];
         $informacion = $_REQUEST["informacion"];
         $this->tecnico->modificar($id, $nombre, $apellido, $genero, $telefono, $direccion, $email, $informacion);
-        $this->actualizar();
+        require_once 'Vista/Ptecnico.php';
     }
 }
